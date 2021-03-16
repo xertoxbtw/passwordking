@@ -105,15 +105,15 @@ namespace passwordking
                     {
                         Buffer1 = Buffer1 + "-";
                     }
-                    Buffer1 = Buffer1 + config.Keybind_Add + ": Add | ";
-                    Buffer1 = Buffer1 + config.Keybind_Edit + ": Edit | ";
-                    Buffer1 = Buffer1 + config.Keybind_Delete + ": Delete\n";
-                    Buffer1 = Buffer1 + config.Keybind_GetPassword + ": Copy Password | ";
-                    Buffer1 = Buffer1 + config.Keybind_Save + ": Save | ";
-                    Buffer1 = Buffer1 + config.Keybind_Exit + ": Exit\n";
-                    Buffer1 = Buffer1 + config.Keybind_Up + ": Scroll Up | ";
-                    Buffer1 = Buffer1 + config.Keybind_Down + ": Scroll Down | ";
-                    Buffer1 = Buffer1 + config.Keybind_Reset + ": Reset";
+                    Buffer1 = Buffer1 + config.Keybind_Add + ": "+langSystem.Sets["ui_add"]+" | ";
+                    Buffer1 = Buffer1 + config.Keybind_Edit + ": " + langSystem.Sets["ui_edit"] + " | ";
+                    Buffer1 = Buffer1 + config.Keybind_Delete + ": " + langSystem.Sets["ui_delete"] + "\n";
+                    Buffer1 = Buffer1 + config.Keybind_GetPassword + ": " + langSystem.Sets["ui_copy"] + " | ";
+                    Buffer1 = Buffer1 + config.Keybind_Save + ": " + langSystem.Sets["ui_save"] + " | ";
+                    Buffer1 = Buffer1 + config.Keybind_Exit + ": " + langSystem.Sets["ui_exit"] + "\n";
+                    Buffer1 = Buffer1 + config.Keybind_Up + ": " + langSystem.Sets["ui_scrollup"] + " | ";
+                    Buffer1 = Buffer1 + config.Keybind_Down + ": " + langSystem.Sets["ui_scrolldown"] + " | ";
+                    Buffer1 = Buffer1 + config.Keybind_Reset + ": " + langSystem.Sets["ui_reset"];
                     string Buffer2 = "";
                     for (int i = 0; i < maxDraw; i++)
                     {
@@ -151,7 +151,7 @@ namespace passwordking
                     {
                         if (select < entries.Count)
                         {
-                            if (Select("Are you sure?", config) == true)
+                            if (Select(langSystem.Sets["ask_sure"], config,langSystem) == true)
                             {
                                 entries.RemoveAt(select);
                             }
@@ -173,7 +173,7 @@ namespace passwordking
                         if (filePassword == "")
                         {
                             Console.Clear();
-                            Console.WriteLine("Enter a Main Password: ");
+                            Console.WriteLine(langSystem.Sets["mainpassword"]+": ");
                             Console.CursorVisible = true;
                             filePassword = Console.ReadLine();
                             Console.CursorVisible = false;
@@ -226,16 +226,18 @@ namespace passwordking
                     }
                     else if (keyInput == config.Keybind_Reset)
                     {
-                        config.Reset();
-                        config.Save();
+                        if(Select(langSystem.Sets["textdelete"], config,langSystem))
+                        {
+                            entries.Clear();
+                            filePassword = "";
+                        }
                     }
-
                 }
                 else if (screen == 2) // New Screen
                 {
                     if (File.Exists("passwords"))
                     {
-                        switch (Select("Do you want to overwrite your Existing Passwords?", config))
+                        switch (Select(langSystem.Sets["textoverwrite"], config,langSystem))
                         {
                             case true:
                                 entries.Clear();
@@ -258,7 +260,7 @@ namespace passwordking
                     {
                         try
                         {
-                            Console.Write("Please enter the Password: ");
+                            Console.Write(langSystem.Sets["mainpassword"] + ": ");
                             Console.CursorVisible = true;
                             Console.ForegroundColor = Console.BackgroundColor;
                             filePassword = Console.ReadLine();
@@ -289,20 +291,22 @@ namespace passwordking
                     {
                         Console.CursorVisible = true;
                         Console.Clear();
-                        Console.WriteLine("Add a new Entry");
-                        Console.Write("Name: ");
+                        Console.WriteLine(langSystem.Sets["textadd"]);
+                        Console.Write(langSystem.Sets["name"] + ": ");
                         name = Console.ReadLine();
+                        if (name.Contains("§%&%§") == true) { name = ""; }
                     }
                     while (psw == "")
                     {
                         Console.CursorVisible = true;
                         Console.Clear();
-                        Console.WriteLine("Add a new Entry");
-                        Console.WriteLine("Name: " + name);
-                        Console.Write("Password: ");
+                        Console.WriteLine(langSystem.Sets["textadd"]);
+                        Console.WriteLine(langSystem.Sets["name"] + ": " + name);
+                        Console.Write(langSystem.Sets["password"] + ": ");
                         Console.ForegroundColor = Console.BackgroundColor;
                         psw = Console.ReadLine();
                         Console.ResetColor();
+                        if (psw.Contains("§%&%§") == true) { psw = ""; }
                     }
                     entries.Add(new Entry(name, psw));
                     name = ""; psw = "";
@@ -314,10 +318,10 @@ namespace passwordking
                     if (select < entries.Count)
                     {
                         Console.CursorVisible = true;
-                        Console.WriteLine("Editing: " + entries[select].Name + "\n(Leave Empty to Edit nothing)");
-                        Console.Write("Name: ");
+                        Console.WriteLine(langSystem.Sets["textedit1"]+": " + entries[select].Name + "\n"+ langSystem.Sets["textedit2"]);
+                        Console.Write(langSystem.Sets["name"]+": ");
                         string nin = Console.ReadLine();
-                        Console.Write("Password: ");
+                        Console.Write(langSystem.Sets["password"] + ": ");
                         string pin = Console.ReadLine();
                         if (nin != "")
                         {
@@ -337,7 +341,7 @@ namespace passwordking
             }
         }
 
-        static bool Select(string topText, Config config)
+        static bool Select(string topText, Config config,LangSystem langSystem)
         {
             byte buffer = 0;
             while (true)
@@ -350,13 +354,13 @@ namespace passwordking
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
                 }
-                Console.WriteLine("Yes");
+                Console.WriteLine(langSystem.Sets["yes"]);
                 Console.ResetColor();
                 if (buffer == 1)
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
                 }
-                Console.WriteLine("No");
+                Console.WriteLine(langSystem.Sets["no"]);
                 Console.ResetColor();
                 ConsoleKey key = Console.ReadKey(false).Key;
                 if (key == config.Keybind_Up)
