@@ -28,7 +28,7 @@ namespace passwordking
                 config.Save();
             }
 
-
+            LangSystem langSystem = new LangSystem(config.Language);
             List<Entry> entries = new List<Entry>();
             byte screen = 0;
             int curY = 0;
@@ -38,7 +38,7 @@ namespace passwordking
             string filePassword = "";
             Console.Clear();
             Console.CursorVisible = false;
-            Console.Title = "passwordKing by xertox";
+            Console.Title = langSystem.Sets["title"];
             bool Run = true;
             while (Run)
             {
@@ -49,14 +49,14 @@ namespace passwordking
 
                 if (screen == 0) // init Select
                 {
-                    Console.WriteLine("--- passwordKing ---");
+                    Console.WriteLine("--- " + langSystem.Sets["title"] + " ---");
                     if (curY == 0)
                     {
                         Console.ResetColor();
                         Console.BackgroundColor = ConsoleColor.Green;
                     }
                     else { Console.ResetColor(); }
-                    Console.WriteLine("New");
+                    Console.WriteLine(langSystem.Sets["new"]);
 
                     if (curY == 1)
                     {
@@ -64,7 +64,7 @@ namespace passwordking
                         Console.BackgroundColor = ConsoleColor.Green;
                     }
                     else { Console.ResetColor(); }
-                    Console.WriteLine("Load");
+                    Console.WriteLine(langSystem.Sets["load"]);
 
                     Console.ResetColor();
                     ConsoleKey input = Console.ReadKey(false).Key;
