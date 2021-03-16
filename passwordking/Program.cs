@@ -14,7 +14,7 @@ namespace passwordking
             {
                 if (File.Exists("config.cfg"))
                 {
-                    config = config.Load();
+                    config.Load();
                 }
                 else
                 {

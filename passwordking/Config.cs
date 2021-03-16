@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -19,11 +18,77 @@ namespace passwordking
         public ConsoleKey Keybind_Reset;
         public void Save()
         {
-            File.WriteAllText("config.cfg",JsonConvert.SerializeObject(this));
+            string langstring = "";
+            if (Language == LangSystem.Language.DE) langstring = "DE";
+            else if (Language == LangSystem.Language.EN) langstring = "EN";
+            string cfg = "Config File for passwordKing\nGoto https://docs.microsoft.com/en-us/dotnet/api/system.consolekey?view=net-5.0 for Keycode List\n";
+            cfg = cfg + "Language:" + langstring+"\n";
+            cfg = cfg + "Key_Add:" + Convert.ToByte(Keybind_Add) + "\n";
+            cfg = cfg + "Key_Save:" + Convert.ToByte(Keybind_Save) + "\n";
+            cfg = cfg + "Key_Delete:" + Convert.ToByte(Keybind_Delete) + "\n";
+            cfg = cfg + "Key_Edit:" + Convert.ToByte(Keybind_Edit) + "\n";
+            cfg = cfg + "Key_GetPassword:" + Convert.ToByte(Keybind_GetPassword) + "\n";
+            cfg = cfg + "Key_Exit:" + Convert.ToByte(Keybind_Exit) + "\n";
+            cfg = cfg + "Key_Up:" + Convert.ToByte(Keybind_Up) + "\n";
+            cfg = cfg + "Key_Down:" + Convert.ToByte(Keybind_Down) + "\n";
+            cfg = cfg + "Key_Reset:" + Convert.ToByte(Keybind_Reset);
+
+            File.WriteAllText("config.cfg", cfg);
         }
-        public Config Load()
+        public void Load()
         {
-            return JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.cfg"));
+            string[] rawLines = File.ReadAllLines("config.cfg");
+            for (int i = 0; i < rawLines.Length; i++)
+            {
+                string[] thisLine = rawLines[i].Split(":", StringSplitOptions.RemoveEmptyEntries);
+                if (thisLine[0] == "Language")
+                {
+                    if (thisLine[1].ToLower() == "de")
+                    {
+                        Language = LangSystem.Language.DE;
+                    }
+                    else if (thisLine[1].ToLower() == "en")
+                    {
+                        Language = LangSystem.Language.EN;
+                    }
+                }
+                else if (thisLine[0] == "Key_Add")
+                {
+                    Keybind_Add = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_Save")
+                {
+                    Keybind_Save = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_Delete")
+                {
+                    Keybind_Delete = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_Edit")
+                {
+                    Keybind_Edit = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_GetPassword")
+                {
+                    Keybind_GetPassword = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_Exit")
+                {
+                    Keybind_Exit = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_Up")
+                {
+                    Keybind_Up = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_Down")
+                {
+                    Keybind_Down = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "Key_Reset")
+                {
+                    Keybind_Reset = (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+            }
         }
         public void Reset()
         {
@@ -37,93 +102,6 @@ namespace passwordking
             Keybind_Up = ConsoleKey.UpArrow;
             Keybind_Down = ConsoleKey.DownArrow;
             Keybind_Reset = ConsoleKey.F12;
-        }
-    }
-    public class LangSystem
-    {
-        public Dictionary<string, string> Sets;
-
-        public LangSystem(Language lang)
-        {
-            Sets = new Dictionary<string, string>();
-            if (lang == Language.EN)
-            {
-                Sets.Add("title", "passwordKing");
-                Sets.Add("new", "New");
-                Sets.Add("load", "Load");
-
-                Sets.Add("ui_add", "Add");
-                Sets.Add("ui_edit", "Edit");
-                Sets.Add("ui_delete", "Delete");
-
-                Sets.Add("ui_copy", "Copy Password");
-                Sets.Add("ui_save", "Save");
-                Sets.Add("ui_exit", "Exit");
-
-                Sets.Add("ui_scrollup", "Scroll Up");
-                Sets.Add("ui_scrolldown", "Scroll Down");
-                Sets.Add("ui_reset", "Reset");
-
-                Sets.Add("ask_sure", "Are you sure?");
-
-                Sets.Add("yes", "Yes");
-                Sets.Add("no", "No");
-
-                Sets.Add("name", "Name");
-                Sets.Add("password", "Password");
-
-                Sets.Add("mainpassword", "Please enter the Main Password");
-
-                Sets.Add("textoverwrite", "Do you want to overwrite your Existing Passwords?");
-                Sets.Add("textdelete", "Do you really want to delete all stored Passwords?");
-
-                Sets.Add("textedit1", "Editing");
-                Sets.Add("textedit2", "(Leave Empty to Edit nothing)");
-
-                Sets.Add("textadd", "Add a new Entry");
-            }
-            else if (lang == Language.DE)
-            {
-                Sets.Add("title", "KennwörterKönig");
-                Sets.Add("new", "Neu");
-                Sets.Add("load", "Laden");
-
-                Sets.Add("ui_add", "Hinzufügen");
-                Sets.Add("ui_edit", "Bearbeiten");
-                Sets.Add("ui_delete", "Löschen");
-
-                Sets.Add("ui_copy", "Kennwörter Kopieren");
-                Sets.Add("ui_save", "Speichern");
-                Sets.Add("ui_exit", "Verlassen");
-
-                Sets.Add("ui_scrollup", "Nach oben scrollen");
-                Sets.Add("ui_scrolldown", "Nach unten scrollen");
-                Sets.Add("ui_reset", "Zurücksetzen");
-
-                Sets.Add("ask_sure", "Sind sie sich sicher?");
-
-                Sets.Add("yes", "Ja");
-                Sets.Add("no", "Nein");
-
-                Sets.Add("name", "Name");
-                Sets.Add("password", "Kennwörter");
-
-                Sets.Add("mainpassword", "Bitte geben sie das Hauptkennwörter ein");
-
-
-                Sets.Add("textoverwrite", "Möchten Sie Ihre bestehenden Kennwörter überschreiben?");
-                Sets.Add("textdelete", "Möchten Sie wirklich alle gespeicherten Kennwörter löschen?");
-
-                Sets.Add("textedit1", "Bearbeiten");
-                Sets.Add("textedit2", "(Leer lassen, um nichts zu bearbeiten)");
-
-                Sets.Add("textadd", "Einen neuen Eintrag hinzufügen");
-            }
-        }
-
-        public enum Language
-        {
-            EN, DE
         }
     }
 }
