@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using TextCopy;
 
 namespace passwordking
@@ -105,7 +108,7 @@ namespace passwordking
                     {
                         Buffer1 = Buffer1 + "-";
                     }
-                    Buffer1 = Buffer1 + config.Keybind_Add + ": "+langSystem.Sets["ui_add"]+" | ";
+                    Buffer1 = Buffer1 + config.Keybind_Add + ": " + langSystem.Sets["ui_add"] + " | ";
                     Buffer1 = Buffer1 + config.Keybind_Edit + ": " + langSystem.Sets["ui_edit"] + " | ";
                     Buffer1 = Buffer1 + config.Keybind_Delete + ": " + langSystem.Sets["ui_delete"] + "\n";
                     Buffer1 = Buffer1 + config.Keybind_GetPassword + ": " + langSystem.Sets["ui_copy"] + " | ";
@@ -151,7 +154,7 @@ namespace passwordking
                     {
                         if (select < entries.Count)
                         {
-                            if (Select(langSystem.Sets["ask_sure"], config,langSystem) == true)
+                            if (Select(langSystem.Sets["ask_sure"], config, langSystem) == true)
                             {
                                 entries.RemoveAt(select);
                             }
@@ -173,7 +176,7 @@ namespace passwordking
                         if (filePassword == "")
                         {
                             Console.Clear();
-                            Console.WriteLine(langSystem.Sets["mainpassword"]+": ");
+                            Console.WriteLine(langSystem.Sets["mainpassword"] + ": ");
                             Console.CursorVisible = true;
                             filePassword = Console.ReadLine();
                             Console.CursorVisible = false;
@@ -226,7 +229,7 @@ namespace passwordking
                     }
                     else if (keyInput == config.Keybind_Reset)
                     {
-                        if(Select(langSystem.Sets["textdelete"], config,langSystem))
+                        if (Select(langSystem.Sets["textdelete"], config, langSystem))
                         {
                             entries.Clear();
                             filePassword = "";
@@ -237,7 +240,7 @@ namespace passwordking
                 {
                     if (File.Exists("passwords"))
                     {
-                        switch (Select(langSystem.Sets["textoverwrite"], config,langSystem))
+                        switch (Select(langSystem.Sets["textoverwrite"], config, langSystem))
                         {
                             case true:
                                 entries.Clear();
@@ -287,16 +290,17 @@ namespace passwordking
                 {
                     string name = "", psw = "";
                     Console.CursorVisible = true;
-                    while (name == "")
+                    while (true)
                     {
                         Console.CursorVisible = true;
                         Console.Clear();
                         Console.WriteLine(langSystem.Sets["textadd"]);
                         Console.Write(langSystem.Sets["name"] + ": ");
                         name = Console.ReadLine();
-                        if (name.Contains("§%&%§") == true) { name = ""; }
+                        if (name.Contains("§%&%§") == true) name = "";
+                        else if (name != "") break;
                     }
-                    while (psw == "")
+                    while (true)
                     {
                         Console.CursorVisible = true;
                         Console.Clear();
@@ -307,6 +311,19 @@ namespace passwordking
                         psw = Console.ReadLine();
                         Console.ResetColor();
                         if (psw.Contains("§%&%§") == true) { psw = ""; }
+                        else if (psw.StartsWith("random"))
+                        {
+                            string[] pswenter = psw.Split(" ");
+                            int lenpsw;
+                            try
+                            {
+                                lenpsw = Convert.ToInt32(pswenter[1]);
+                                psw = RandomPassword(lenpsw, config);
+                                break;
+                            }
+                            catch { }
+                        }
+                        else if (psw != "") break;
                     }
                     entries.Add(new Entry(name, psw));
                     name = ""; psw = "";
@@ -318,8 +335,8 @@ namespace passwordking
                     if (select < entries.Count)
                     {
                         Console.CursorVisible = true;
-                        Console.WriteLine(langSystem.Sets["textedit1"]+": " + entries[select].Name + "\n"+ langSystem.Sets["textedit2"]);
-                        Console.Write(langSystem.Sets["name"]+": ");
+                        Console.WriteLine(langSystem.Sets["textedit1"] + ": " + entries[select].Name + "\n" + langSystem.Sets["textedit2"]);
+                        Console.Write(langSystem.Sets["name"] + ": ");
                         string nin = Console.ReadLine();
                         Console.Write(langSystem.Sets["password"] + ": ");
                         string pin = Console.ReadLine();
@@ -329,7 +346,24 @@ namespace passwordking
                         }
                         if (pin != "")
                         {
-                            entries[select].Password = pin;
+                            if (pin.Contains("random"))
+                            {
+                                try
+                                {
+                                    string[] pinenter = pin.Split(" ");
+                                    int pinlen = Convert.ToInt32(pinenter[1]);
+                                    entries[select].Password = RandomPassword(pinlen, config);
+                                }
+                                catch
+                                {
+                                    pin = entries[select].Password;
+                                }
+
+                            }
+                            else
+                            {
+                                entries[select].Password = pin;
+                            }
                         }
                         screen = 1;
                     }
@@ -341,7 +375,7 @@ namespace passwordking
             }
         }
 
-        static bool Select(string topText, Config config,LangSystem langSystem)
+        static bool Select(string topText, Config config, LangSystem langSystem)
         {
             byte buffer = 0;
             while (true)
@@ -388,8 +422,25 @@ namespace passwordking
                         return false;
                     }
                 }
-
             }
+        }
+
+        static string RandomPassword(int len, Config config)
+        {
+            String res = "";
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            {
+                byte[] uintBuffer = new byte[sizeof(uint)];
+
+                while (len-- > 0)
+                {
+                    rng.GetBytes(uintBuffer);
+                    uint num = BitConverter.ToUInt32(uintBuffer, 0);
+                    res = res + (config.RandomCharSet[(int)(num % (uint)config.RandomCharSet.Length)]);
+                }
+            }
+
+            return res.ToString();
         }
     }
 }

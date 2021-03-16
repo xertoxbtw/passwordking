@@ -16,13 +16,14 @@ namespace passwordking
         public ConsoleKey Keybind_Up;
         public ConsoleKey Keybind_Down;
         public ConsoleKey Keybind_Reset;
+        public string RandomCharSet;
         public void Save()
         {
             string langstring = "";
             if (Language == LangSystem.Language.DE) langstring = "DE";
             else if (Language == LangSystem.Language.EN) langstring = "EN";
             string cfg = "Config File for passwordKing\nGoto https://docs.microsoft.com/en-us/dotnet/api/system.consolekey?view=net-5.0 for Keycode List\n";
-            cfg = cfg + "Language:" + langstring+"\n";
+            cfg = cfg + "Language:" + langstring + "\n";
             cfg = cfg + "Key_Add:" + Convert.ToByte(Keybind_Add) + "\n";
             cfg = cfg + "Key_Save:" + Convert.ToByte(Keybind_Save) + "\n";
             cfg = cfg + "Key_Delete:" + Convert.ToByte(Keybind_Delete) + "\n";
@@ -31,8 +32,8 @@ namespace passwordking
             cfg = cfg + "Key_Exit:" + Convert.ToByte(Keybind_Exit) + "\n";
             cfg = cfg + "Key_Up:" + Convert.ToByte(Keybind_Up) + "\n";
             cfg = cfg + "Key_Down:" + Convert.ToByte(Keybind_Down) + "\n";
-            cfg = cfg + "Key_Reset:" + Convert.ToByte(Keybind_Reset);
-
+            cfg = cfg + "Key_Reset:" + Convert.ToByte(Keybind_Reset) + "\n";
+            cfg = cfg + "RandomCharset:" + RandomCharSet;
             File.WriteAllText("config.cfg", cfg);
         }
         public void Load()
@@ -88,6 +89,10 @@ namespace passwordking
                 {
                     Keybind_Reset = (ConsoleKey)Convert.ToByte(thisLine[1]);
                 }
+                else if (thisLine[0] == "RandomCharset")
+                {
+                    RandomCharSet = thisLine[1];
+                }
             }
         }
         public void Reset()
@@ -102,6 +107,7 @@ namespace passwordking
             Keybind_Up = ConsoleKey.UpArrow;
             Keybind_Down = ConsoleKey.DownArrow;
             Keybind_Reset = ConsoleKey.F12;
+            RandomCharSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         }
     }
 }
