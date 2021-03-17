@@ -18,6 +18,8 @@ namespace passwordking
         public ConsoleKey Keybind_Reset;
         public ConsoleKey Keybind_Help;
 
+        public string Filename;
+
         public bool ShowPasswordInput;
 
         public string RandomCharSet;
@@ -39,6 +41,7 @@ namespace passwordking
             cfg = cfg + "Key_Reset:" + Convert.ToByte(Keybind_Reset) + "\n";
             cfg = cfg + "Key_Help:" + Convert.ToByte(Keybind_Help) + "\n";
             cfg = cfg + "ShowPasswordInput:" + ShowPasswordInput + "\n";
+            cfg = cfg + "Filename:" + Filename + "\n";
             cfg = cfg + "RandomCharset:" + RandomCharSet;
             File.WriteAllText("config.cfg", cfg);
         }
@@ -97,11 +100,15 @@ namespace passwordking
                 }
                 else if (thisLine[0] == "Key_Help")
                 {
-                    Keybind_Help= (ConsoleKey)Convert.ToByte(thisLine[1]);
+                    Keybind_Help = (ConsoleKey)Convert.ToByte(thisLine[1]);
                 }
                 else if (thisLine[0] == "ShowPasswordInput")
                 {
                     ShowPasswordInput = Convert.ToBoolean(thisLine[1]);
+                }
+                else if (thisLine[0] == "Filename")
+                {
+                    Filename = thisLine[1];
                 }
                 else if (thisLine[0] == "RandomCharset")
                 {
@@ -122,6 +129,7 @@ namespace passwordking
             Keybind_Down = ConsoleKey.DownArrow;
             Keybind_Reset = ConsoleKey.F12;
             Keybind_Help = ConsoleKey.H;
+            Filename = "passwords";
             ShowPasswordInput = false;
             RandomCharSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         }

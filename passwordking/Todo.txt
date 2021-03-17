@@ -1,4 +1,2 @@
-﻿-> Save Main Password Support
--> Add Help Function~
--> Password File Structure Rework
+﻿-> Add Help Function~
 -> Add Cloud support?

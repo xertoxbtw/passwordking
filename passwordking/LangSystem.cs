@@ -62,6 +62,8 @@ namespace passwordking
                 Sets.Add("howtoUseText", "How To Use");
                 Sets.Add("configText", "Config");
                 Sets.Add("creditText", "Credit");
+
+                Sets.Add("arrow", "->");
             }
             else if (lang == Language.DE)
             {
@@ -113,6 +115,8 @@ namespace passwordking
                 Sets.Add("howtoUseTitle", "How To Use");
                 Sets.Add("configTitle", "Config");
                 Sets.Add("creditTitle", "Credit");
+
+                Sets.Add("arrow", "->");
             }
         }
 

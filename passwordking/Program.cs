@@ -85,7 +85,7 @@ namespace passwordking
         }
         static void NewMenu()
         {
-            if (File.Exists("passwords"))
+            if (File.Exists(config.Filename))
             {
                 switch (Select(langSystem.Sets["textoverwrite"]))
                 {
@@ -106,7 +106,7 @@ namespace passwordking
         }
         static void LoadMenu()
         {
-            if (File.Exists("passwords"))
+            if (File.Exists(config.Filename))
             {
                 try
                 {
@@ -116,7 +116,7 @@ namespace passwordking
                     filePassword = Console.ReadLine();
                     Console.CursorVisible = false;
                     Console.ResetColor();
-                    string def = StringCipher.Decrypt(File.ReadAllText("passwords"), filePassword);
+                    string def = Security.Decrypt(File.ReadAllText(config.Filename), filePassword);
                     entries.Clear();
 
                     string[] raw = def.Split("\n");
@@ -136,21 +136,15 @@ namespace passwordking
             Console.WriteLine("--- " + langSystem.Sets["title"] + " ---");
             if (curY == 0)
             {
-                Console.ResetColor();
-                Console.BackgroundColor = ConsoleColor.Green;
+                Console.Write(langSystem.Sets["arrow"]);
             }
-            else { Console.ResetColor(); }
             Console.WriteLine(langSystem.Sets["new"]);
 
             if (curY == 1)
             {
-                Console.ResetColor();
-                Console.BackgroundColor = ConsoleColor.Green;
+                Console.Write(langSystem.Sets["arrow"]);
             }
-            else { Console.ResetColor(); }
             Console.WriteLine(langSystem.Sets["load"]);
-
-            Console.ResetColor();
             ConsoleKey input = Console.ReadKey(false).Key;
             if (input == config.Keybind_Up)
             {
@@ -216,10 +210,8 @@ namespace passwordking
             // Highlight Selected
             if (entries.Count > 0)
             {
-                Console.BackgroundColor = ConsoleColor.Green;
                 Console.SetCursorPosition(0, curY);
-                Console.Write(entries[curY + offset]);
-                Console.ResetColor();
+                Console.Write(langSystem.Sets["arrow"]+entries[curY + offset]);
             }
 
             MainInput();
@@ -257,8 +249,8 @@ namespace passwordking
                 {
                     Buffer = Buffer + entries[i].Name + "§%&%§" + entries[i].Password + "\n";
                 }
-                Buffer = StringCipher.Encrypt(Buffer, filePassword);
-                File.WriteAllText("passwords", Buffer);
+                Buffer = Security.Encrypt(Buffer, filePassword);
+                File.WriteAllText(config.Filename, Buffer);
             }
             else if (keyInput == config.Keybind_Exit) // Exit
                 Run = false;
@@ -375,14 +367,11 @@ namespace passwordking
             while (true)
             {
                 Console.Clear();
-                Console.ResetColor();
                 Console.WriteLine(topText);
-                if (buffer == 0) Console.BackgroundColor = ConsoleColor.Green;
+                if (buffer == 0) Console.Write(langSystem.Sets["arrow"]);
                 Console.WriteLine(langSystem.Sets["yes"]);
-                Console.ResetColor();
-                if (buffer == 1) Console.BackgroundColor = ConsoleColor.Green;
+                if (buffer == 1) Console.Write(langSystem.Sets["arrow"]);
                 Console.WriteLine(langSystem.Sets["no"]);
-                Console.ResetColor();
                 ConsoleKey key = Console.ReadKey(false).Key;
                 if (key == config.Keybind_Up && buffer == 1) buffer = 0;
                 else if (key == config.Keybind_Down && buffer == 0) buffer = 1;
@@ -406,33 +395,28 @@ namespace passwordking
             while (true)
             {
                 Console.Clear();
-                Console.ResetColor();
                 Console.WriteLine(langSystem.Sets["helpTitle"]);
 
                 if (selection == 0)
                 {
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write(langSystem.Sets["arrow"]);
                 }
                 Console.WriteLine(langSystem.Sets["howtoUseTitle"]);
-                Console.ResetColor();
                 if (selection == 1)
                 {
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write(langSystem.Sets["arrow"]);
                 }
                 Console.WriteLine(langSystem.Sets["configTitle"]);
-                Console.ResetColor();
                 if (selection == 2)
                 {
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write(langSystem.Sets["arrow"]);
                 }
                 Console.WriteLine(langSystem.Sets["creditTitle"]);
-                Console.ResetColor();
                 if (selection == 3)
                 {
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write(langSystem.Sets["arrow"]);
                 }
                 Console.WriteLine(langSystem.Sets["back"]);
-                Console.ResetColor();
 
                 ConsoleKey key = Console.ReadKey(false).Key;
                 if (key == config.Keybind_Down && selection != 3) selection++;
@@ -445,9 +429,7 @@ namespace passwordking
                         {
                             Console.Clear();
                             Console.WriteLine(langSystem.Sets["howtoUseText"]);
-                            Console.BackgroundColor = ConsoleColor.Green;
-                            Console.WriteLine(langSystem.Sets["back"]);
-                            Console.ResetColor();
+                            Console.WriteLine(langSystem.Sets["arrow"]+langSystem.Sets["back"]);
                             if (Console.ReadKey(false).Key == ConsoleKey.Enter)
                             {
                                 break;
@@ -460,9 +442,7 @@ namespace passwordking
                         {
                             Console.Clear();
                             Console.WriteLine(langSystem.Sets["configText"]);
-                            Console.BackgroundColor = ConsoleColor.Green;
-                            Console.WriteLine(langSystem.Sets["back"]);
-                            Console.ResetColor();
+                            Console.WriteLine(langSystem.Sets["arrow"]+langSystem.Sets["back"]);
                             if (Console.ReadKey(false).Key == ConsoleKey.Enter)
                             {
                                 break;
@@ -475,9 +455,7 @@ namespace passwordking
                         {
                             Console.Clear();
                             Console.WriteLine(langSystem.Sets["creditText"]);
-                            Console.BackgroundColor = ConsoleColor.Green;
-                            Console.WriteLine(langSystem.Sets["back"]);
-                            Console.ResetColor();
+                            Console.WriteLine(langSystem.Sets["arrow"] + langSystem.Sets["back"]);
                             if (Console.ReadKey(false).Key == ConsoleKey.Enter)
                             {
                                 break;
