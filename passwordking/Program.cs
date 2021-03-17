@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using TextCopy;
 
 namespace passwordking
 {
@@ -231,7 +230,7 @@ namespace passwordking
             else if (keyInput == config.Keybind_Help) // Help
                 screen = 255;
             else if (keyInput == config.Keybind_GetPassword && select < entries.Count) // Get Password
-                ClipboardService.SetText(entries[select].Password);
+                Clipboard.Set(entries[select].Password);
             else if (keyInput == config.Keybind_Save) // Save
             {
                 if (filePassword == "")

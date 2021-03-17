@@ -1,2 +1,4 @@
 ﻿-> Add Help Function~
 -> Add Cloud support?
+-> Cleanup MainInput() Method
+-> Cleanup Help() Method
