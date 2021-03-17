@@ -16,14 +16,18 @@ namespace passwordking
         public ConsoleKey Keybind_Up;
         public ConsoleKey Keybind_Down;
         public ConsoleKey Keybind_Reset;
+        public ConsoleKey Keybind_Help;
+
+        public bool ShowPasswordInput;
+
         public string RandomCharSet;
         public void Save()
         {
-            string langstring = "";
-            if (Language == LangSystem.Language.DE) langstring = "DE";
-            else if (Language == LangSystem.Language.EN) langstring = "EN";
+            string tmp = "";
+            if (Language == LangSystem.Language.DE) tmp = "DE";
+            else if (Language == LangSystem.Language.EN) tmp = "EN";
             string cfg = "Config File for passwordKing\nGoto https://docs.microsoft.com/en-us/dotnet/api/system.consolekey?view=net-5.0 for Keycode List\n";
-            cfg = cfg + "Language:" + langstring + "\n";
+            cfg = cfg + "Language:" + tmp + "\n";
             cfg = cfg + "Key_Add:" + Convert.ToByte(Keybind_Add) + "\n";
             cfg = cfg + "Key_Save:" + Convert.ToByte(Keybind_Save) + "\n";
             cfg = cfg + "Key_Delete:" + Convert.ToByte(Keybind_Delete) + "\n";
@@ -33,6 +37,8 @@ namespace passwordking
             cfg = cfg + "Key_Up:" + Convert.ToByte(Keybind_Up) + "\n";
             cfg = cfg + "Key_Down:" + Convert.ToByte(Keybind_Down) + "\n";
             cfg = cfg + "Key_Reset:" + Convert.ToByte(Keybind_Reset) + "\n";
+            cfg = cfg + "Key_Help:" + Convert.ToByte(Keybind_Help) + "\n";
+            cfg = cfg + "ShowPasswordInput:" + ShowPasswordInput + "\n";
             cfg = cfg + "RandomCharset:" + RandomCharSet;
             File.WriteAllText("config.cfg", cfg);
         }
@@ -89,6 +95,14 @@ namespace passwordking
                 {
                     Keybind_Reset = (ConsoleKey)Convert.ToByte(thisLine[1]);
                 }
+                else if (thisLine[0] == "Key_Help")
+                {
+                    Keybind_Help= (ConsoleKey)Convert.ToByte(thisLine[1]);
+                }
+                else if (thisLine[0] == "ShowPasswordInput")
+                {
+                    ShowPasswordInput = Convert.ToBoolean(thisLine[1]);
+                }
                 else if (thisLine[0] == "RandomCharset")
                 {
                     RandomCharSet = thisLine[1];
@@ -107,6 +121,8 @@ namespace passwordking
             Keybind_Up = ConsoleKey.UpArrow;
             Keybind_Down = ConsoleKey.DownArrow;
             Keybind_Reset = ConsoleKey.F12;
+            Keybind_Help = ConsoleKey.H;
+            ShowPasswordInput = false;
             RandomCharSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         }
     }

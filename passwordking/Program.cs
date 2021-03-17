@@ -110,7 +110,8 @@ namespace passwordking
                     }
                     Buffer1 = Buffer1 + config.Keybind_Add + ": " + langSystem.Sets["ui_add"] + " | ";
                     Buffer1 = Buffer1 + config.Keybind_Edit + ": " + langSystem.Sets["ui_edit"] + " | ";
-                    Buffer1 = Buffer1 + config.Keybind_Delete + ": " + langSystem.Sets["ui_delete"] + "\n";
+                    Buffer1 = Buffer1 + config.Keybind_Delete + ": " + langSystem.Sets["ui_delete"] + " | ";
+                    Buffer1 = Buffer1 + config.Keybind_Help + ": " + langSystem.Sets["ui_help"] + "\n";
                     Buffer1 = Buffer1 + config.Keybind_GetPassword + ": " + langSystem.Sets["ui_copy"] + " | ";
                     Buffer1 = Buffer1 + config.Keybind_Save + ": " + langSystem.Sets["ui_save"] + " | ";
                     Buffer1 = Buffer1 + config.Keybind_Exit + ": " + langSystem.Sets["ui_exit"] + "\n";
@@ -158,11 +159,11 @@ namespace passwordking
                             {
                                 entries.RemoveAt(select);
                             }
-                            else
-                            {
-
-                            }
                         }
+                    }
+                    else if (keyInput == config.Keybind_Help)
+                    {
+                        screen = 255;
                     }
                     else if (keyInput == config.Keybind_GetPassword)
                     {
@@ -176,9 +177,11 @@ namespace passwordking
                         if (filePassword == "")
                         {
                             Console.Clear();
-                            Console.WriteLine(langSystem.Sets["mainpassword"] + ": ");
+                            Console.Write(langSystem.Sets["mainpassword"] + ": ");
                             Console.CursorVisible = true;
+                            if (config.ShowPasswordInput == false) Console.ForegroundColor = Console.BackgroundColor;
                             filePassword = Console.ReadLine();
+                            Console.ResetColor();
                             Console.CursorVisible = false;
                         }
                         string Buffer = "";
@@ -265,7 +268,7 @@ namespace passwordking
                         {
                             Console.Write(langSystem.Sets["mainpassword"] + ": ");
                             Console.CursorVisible = true;
-                            Console.ForegroundColor = Console.BackgroundColor;
+                            if (config.ShowPasswordInput == false) Console.ForegroundColor = Console.BackgroundColor;
                             filePassword = Console.ReadLine();
                             Console.CursorVisible = false;
                             Console.ResetColor();
@@ -307,7 +310,7 @@ namespace passwordking
                         Console.WriteLine(langSystem.Sets["textadd"]);
                         Console.WriteLine(langSystem.Sets["name"] + ": " + name);
                         Console.Write(langSystem.Sets["password"] + ": ");
-                        Console.ForegroundColor = Console.BackgroundColor;
+                        if (config.ShowPasswordInput == false) Console.ForegroundColor = Console.BackgroundColor;
                         psw = Console.ReadLine();
                         Console.ResetColor();
                         if (psw.Contains("§%&%§") == true) { psw = ""; }
@@ -354,11 +357,7 @@ namespace passwordking
                                     int pinlen = Convert.ToInt32(pinenter[1]);
                                     entries[select].Password = RandomPassword(pinlen, config);
                                 }
-                                catch
-                                {
-                                    pin = entries[select].Password;
-                                }
-
+                                catch { pin = entries[select].Password; }
                             }
                             else
                             {
@@ -371,6 +370,112 @@ namespace passwordking
                     {
                         screen = 1;
                     }
+                }
+                else if (screen == 255) // Hilfe
+                {
+                    byte selection = 0;
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.ResetColor();
+                        Console.WriteLine(langSystem.Sets["helpTitle"]);
+
+                        if (selection == 0)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Green;
+                        }
+                        Console.WriteLine(langSystem.Sets["howtoUseTitle"]);
+                        Console.ResetColor();
+                        if (selection == 1)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Green;
+                        }
+                        Console.WriteLine(langSystem.Sets["configTitle"]);
+                        Console.ResetColor();
+                        if (selection == 2)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Green;
+                        }
+                        Console.WriteLine(langSystem.Sets["creditTitle"]);
+                        Console.ResetColor();
+                        if (selection == 3)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Green;
+                        }
+                        Console.WriteLine(langSystem.Sets["back"]);
+                        Console.ResetColor();
+
+
+                        ConsoleKey key = Console.ReadKey(false).Key;
+                        if (key == config.Keybind_Down)
+                        {
+                            if (selection != 3)
+                            {
+                                selection++;
+                            }
+                        }
+                        else if (key == config.Keybind_Up)
+                        {
+                            if (selection != 0)
+                            {
+                                selection--;
+                            }
+                        }
+                        else if (key == ConsoleKey.Enter)
+                        {
+                            if (selection == 0) // How to Use
+                            {
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine(langSystem.Sets["howtoUseText"]);
+                                    Console.BackgroundColor = ConsoleColor.Green;
+                                    Console.WriteLine(langSystem.Sets["back"]);
+                                    Console.ResetColor();
+                                    if (Console.ReadKey(false).Key == ConsoleKey.Enter)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (selection == 1) // Edit Config
+                            {
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine(langSystem.Sets["configText"]);
+                                    Console.BackgroundColor = ConsoleColor.Green;
+                                    Console.WriteLine(langSystem.Sets["back"]);
+                                    Console.ResetColor();
+                                    if (Console.ReadKey(false).Key == ConsoleKey.Enter)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (selection == 2) // Credit
+                            {
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine(langSystem.Sets["creditText"]);
+                                    Console.BackgroundColor = ConsoleColor.Green;
+                                    Console.WriteLine(langSystem.Sets["back"]);
+                                    Console.ResetColor();
+                                    if (Console.ReadKey(false).Key == ConsoleKey.Enter)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (selection == 3) // Back
+                            {
+                                screen = 1;
+                                break;
+                            }
+                        }
+                    }
+
                 }
             }
         }

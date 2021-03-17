@@ -31,6 +31,8 @@ namespace passwordking
                 Sets.Add("ui_scrolldown", "Scroll Down");
                 Sets.Add("ui_reset", "Reset");
 
+                Sets.Add("ui_help", "Help");
+
                 Sets.Add("ask_sure", "Are you sure?");
 
                 Sets.Add("yes", "Yes");
@@ -48,6 +50,18 @@ namespace passwordking
                 Sets.Add("textedit2", "(Leave Empty to Edit nothing)");
 
                 Sets.Add("textadd", "Add a new Entry");
+
+                Sets.Add("helpTitle", "Help");
+
+                Sets.Add("back", "Back");
+
+                Sets.Add("howtoUseTitle", "How To Use");
+                Sets.Add("configTitle", "Config");
+                Sets.Add("creditTitle", "Credit");
+
+                Sets.Add("howtoUseText", "How To Use");
+                Sets.Add("configText", "Config");
+                Sets.Add("creditText", "Credit");
             }
             else if (lang == Language.DE)
             {
@@ -67,6 +81,8 @@ namespace passwordking
                 Sets.Add("ui_scrolldown", "Nach unten scrollen");
                 Sets.Add("ui_reset", "Zurücksetzen");
 
+                Sets.Add("ui_help", "Hilfe");
+
                 Sets.Add("ask_sure", "Sind sie sich sicher?");
 
                 Sets.Add("yes", "Ja");
@@ -85,6 +101,18 @@ namespace passwordking
                 Sets.Add("textedit2", "(Leer lassen, um nichts zu bearbeiten)");
 
                 Sets.Add("textadd", "Einen neuen Eintrag hinzufügen");
+
+                Sets.Add("helpTitle", "Hilfe");
+
+                Sets.Add("back", "Zurück");
+
+                Sets.Add("howtoUseText", "How To Use");
+                Sets.Add("configText", "Config");
+                Sets.Add("creditText", "Credit");
+
+                Sets.Add("howtoUseTitle", "How To Use");
+                Sets.Add("configTitle", "Config");
+                Sets.Add("creditTitle", "Credit");
             }
         }
 
