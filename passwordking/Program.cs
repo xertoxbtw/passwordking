@@ -231,34 +231,15 @@ namespace passwordking
             ConsoleKey keyInput = Console.ReadKey(false).Key;
 
             if (keyInput == config.Keybind_Add) // Add
-            {
                 screen = 4;
-            }
-            else if (keyInput == config.Keybind_Edit) // Edit
-            {
+            else if (keyInput == config.Keybind_Edit) // Edit   
                 screen = 5;
-            }
-            else if (keyInput == config.Keybind_Delete) // Delete
-            {
-                if (select < entries.Count)
-                {
-                    if (Select(langSystem.Sets["ask_sure"]) == true)
-                    {
-                        entries.RemoveAt(select);
-                    }
-                }
-            }
+            else if (keyInput == config.Keybind_Delete && select < entries.Count && Select(langSystem.Sets["ask_sure"]) == true) // Delete
+                entries.RemoveAt(select);
             else if (keyInput == config.Keybind_Help) // Help
-            {
                 screen = 255;
-            }
-            else if (keyInput == config.Keybind_GetPassword) // Get Password
-            {
-                if (select < entries.Count)
-                {
-                    ClipboardService.SetText(entries[select].Password);
-                }
-            }
+            else if (keyInput == config.Keybind_GetPassword && select < entries.Count) // Get Password
+                ClipboardService.SetText(entries[select].Password);
             else if (keyInput == config.Keybind_Save) // Save
             {
                 if (filePassword == "")
@@ -280,9 +261,7 @@ namespace passwordking
                 File.WriteAllText("passwords", Buffer);
             }
             else if (keyInput == config.Keybind_Exit) // Exit
-            {
                 Run = false;
-            }
             else if (keyInput == config.Keybind_Down) // Down
             {
                 if (curY + offset != entries.Count - 1)
@@ -292,10 +271,7 @@ namespace passwordking
                         if (offset < entries.Count - 1)
                             offset++;
                     }
-                    else
-                    {
-                        curY++;
-                    }
+                    else curY++;
                 }
             }
             else if (keyInput == config.Keybind_Up) // Up
@@ -307,18 +283,12 @@ namespace passwordking
                         offset--;
                     }
                 }
-                else
-                {
-                    curY--;
-                }
+                else curY--;
             }
-            else if (keyInput == config.Keybind_Reset) // Reset
+            else if (keyInput == config.Keybind_Reset && Select(langSystem.Sets["textdelete"])) // Reset
             {
-                if (Select(langSystem.Sets["textdelete"]))
-                {
-                    entries.Clear();
-                    filePassword = "";
-                }
+                entries.Clear();
+                filePassword = "";
             }
         }
         static void Add()
