@@ -23,8 +23,6 @@ namespace passwordking
             }
             return new string(tostring);
         }
-
-
         public static string Decrypt(string input, string key)
         {
             char[] tostring = input.ToCharArray();
