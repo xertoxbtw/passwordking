@@ -406,12 +406,8 @@ namespace passwordking
                         Console.ResetColor();
 
                         ConsoleKey key = Console.ReadKey(false).Key;
-                        if (key == config.Keybind_Down && selection != 3)
-                            selection++;
-
-                        else if (key == config.Keybind_Up && selection != 0)
-                            selection--;
-
+                        if (key == config.Keybind_Down && selection != 3) selection++;
+                        else if (key == config.Keybind_Up && selection != 0) selection--;
                         else if (key == ConsoleKey.Enter)
                         {
                             if (selection == 0) // How to Use
@@ -466,7 +462,6 @@ namespace passwordking
                             }
                         }
                     }
-
                 }
             }
         }
