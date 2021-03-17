@@ -405,21 +405,17 @@ namespace passwordking
                         Console.WriteLine(langSystem.Sets["back"]);
                         Console.ResetColor();
 
-
                         ConsoleKey key = Console.ReadKey(false).Key;
-                        if (key == config.Keybind_Down)
+                        if (key == config.Keybind_Down && selection != 3)
                         {
-                            if (selection != 3)
-                            {
-                                selection++;
-                            }
+
+                            selection++;
+
                         }
-                        else if (key == config.Keybind_Up)
+                        else if (key == config.Keybind_Up && selection != 0)
                         {
-                            if (selection != 0)
-                            {
-                                selection--;
-                            }
+                            selection--;
+
                         }
                         else if (key == ConsoleKey.Enter)
                         {
