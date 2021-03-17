@@ -131,8 +131,6 @@ namespace passwordking
             }
             else screen = 2;
         }
-
-
         static void MainMenu()
         {
             Console.WriteLine("--- " + langSystem.Sets["title"] + " ---");
@@ -184,31 +182,38 @@ namespace passwordking
         {
             maxDraw = Console.WindowHeight - 4;
             select = curY + offset;
-            string Buffer1 = "";
+
+            // UI Create String
+            string KeyBuffer = "";
+            // Split Line
             for (int i = 0; i < Console.WindowWidth; i++)
             {
-                Buffer1 = Buffer1 + "-";
+                KeyBuffer = KeyBuffer + "-";
             }
-            Buffer1 = Buffer1 + config.Keybind_Add + ": " + langSystem.Sets["ui_add"] + " | ";
-            Buffer1 = Buffer1 + config.Keybind_Edit + ": " + langSystem.Sets["ui_edit"] + " | ";
-            Buffer1 = Buffer1 + config.Keybind_Delete + ": " + langSystem.Sets["ui_delete"] + " | ";
-            Buffer1 = Buffer1 + config.Keybind_Help + ": " + langSystem.Sets["ui_help"] + "\n";
-            Buffer1 = Buffer1 + config.Keybind_GetPassword + ": " + langSystem.Sets["ui_copy"] + " | ";
-            Buffer1 = Buffer1 + config.Keybind_Save + ": " + langSystem.Sets["ui_save"] + " | ";
-            Buffer1 = Buffer1 + config.Keybind_Exit + ": " + langSystem.Sets["ui_exit"] + "\n";
-            Buffer1 = Buffer1 + config.Keybind_Up + ": " + langSystem.Sets["ui_scrollup"] + " | ";
-            Buffer1 = Buffer1 + config.Keybind_Down + ": " + langSystem.Sets["ui_scrolldown"] + " | ";
-            Buffer1 = Buffer1 + config.Keybind_Reset + ": " + langSystem.Sets["ui_reset"];
-            string Buffer2 = "";
+            // Draw Control
+            KeyBuffer = KeyBuffer + config.Keybind_Add + ": " + langSystem.Sets["ui_add"] + " | ";
+            KeyBuffer = KeyBuffer + config.Keybind_Edit + ": " + langSystem.Sets["ui_edit"] + " | ";
+            KeyBuffer = KeyBuffer + config.Keybind_Delete + ": " + langSystem.Sets["ui_delete"] + " | ";
+            KeyBuffer = KeyBuffer + config.Keybind_Help + ": " + langSystem.Sets["ui_help"] + "\n";
+            KeyBuffer = KeyBuffer + config.Keybind_GetPassword + ": " + langSystem.Sets["ui_copy"] + " | ";
+            KeyBuffer = KeyBuffer + config.Keybind_Save + ": " + langSystem.Sets["ui_save"] + " | ";
+            KeyBuffer = KeyBuffer + config.Keybind_Exit + ": " + langSystem.Sets["ui_exit"] + "\n";
+            KeyBuffer = KeyBuffer + config.Keybind_Up + ": " + langSystem.Sets["ui_scrollup"] + " | ";
+            KeyBuffer = KeyBuffer + config.Keybind_Down + ": " + langSystem.Sets["ui_scrolldown"] + " | ";
+            KeyBuffer = KeyBuffer + config.Keybind_Reset + ": " + langSystem.Sets["ui_reset"];
+            string ItemBuffer = "";
+            // Draw Entries
             for (int i = 0; i < maxDraw; i++)
             {
                 if (i + offset < entries.Count)
-                    Buffer2 = Buffer2 + entries[i + offset] + "\n";
+                    ItemBuffer = ItemBuffer + entries[i + offset] + "\n";
                 else
-                    Buffer2 = Buffer2 + "\n";
+                    ItemBuffer = ItemBuffer + "\n";
             }
-            Console.Write(Buffer2);
-            Console.Write(Buffer1);
+            Console.Write(ItemBuffer);
+            Console.Write(KeyBuffer);
+
+            // Highlight Selected
             if (entries.Count > 0)
             {
                 Console.BackgroundColor = ConsoleColor.Green;
@@ -217,17 +222,19 @@ namespace passwordking
                 Console.ResetColor();
             }
 
+
+            // Input
             ConsoleKey keyInput = Console.ReadKey(false).Key;
 
-            if (keyInput == config.Keybind_Add)
+            if (keyInput == config.Keybind_Add) // Add
             {
                 screen = 4;
             }
-            else if (keyInput == config.Keybind_Edit)
+            else if (keyInput == config.Keybind_Edit) // Edit
             {
                 screen = 5;
             }
-            else if (keyInput == config.Keybind_Delete)
+            else if (keyInput == config.Keybind_Delete) // Delete
             {
                 if (select < entries.Count)
                 {
@@ -237,18 +244,18 @@ namespace passwordking
                     }
                 }
             }
-            else if (keyInput == config.Keybind_Help)
+            else if (keyInput == config.Keybind_Help) // Help
             {
                 screen = 255;
             }
-            else if (keyInput == config.Keybind_GetPassword)
+            else if (keyInput == config.Keybind_GetPassword) // Get Password
             {
                 if (select < entries.Count)
                 {
                     ClipboardService.SetText(entries[select].Password);
                 }
             }
-            else if (keyInput == config.Keybind_Save)
+            else if (keyInput == config.Keybind_Save) // Save
             {
                 if (filePassword == "")
                 {
@@ -268,11 +275,11 @@ namespace passwordking
                 Buffer = StringCipher.Encrypt(Buffer, filePassword);
                 File.WriteAllText("passwords", Buffer);
             }
-            else if (keyInput == config.Keybind_Exit)
+            else if (keyInput == config.Keybind_Exit) // Exit
             {
                 Run = false;
             }
-            else if (keyInput == config.Keybind_Down)
+            else if (keyInput == config.Keybind_Down) // Down
             {
                 if (curY + offset != entries.Count - 1)
                 {
@@ -287,7 +294,7 @@ namespace passwordking
                     }
                 }
             }
-            else if (keyInput == config.Keybind_Up)
+            else if (keyInput == config.Keybind_Up) // Up
             {
                 if (curY == 0)
                 {
@@ -301,7 +308,7 @@ namespace passwordking
                     curY--;
                 }
             }
-            else if (keyInput == config.Keybind_Reset)
+            else if (keyInput == config.Keybind_Reset) // Reset
             {
                 if (Select(langSystem.Sets["textdelete"]))
                 {
@@ -380,17 +387,11 @@ namespace passwordking
                         }
                         catch { pin = entries[select].Password; }
                     }
-                    else
-                    {
-                        entries[select].Password = pin;
-                    }
+                    else entries[select].Password = pin;
                 }
                 screen = 1;
             }
-            else
-            {
-                screen = 1;
-            }
+            else screen = 1;
         }
 
 
@@ -402,33 +403,15 @@ namespace passwordking
                 Console.Clear();
                 Console.ResetColor();
                 Console.WriteLine(topText);
-                if (buffer == 0)
-                {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                }
+                if (buffer == 0) Console.BackgroundColor = ConsoleColor.Green;
                 Console.WriteLine(langSystem.Sets["yes"]);
                 Console.ResetColor();
-                if (buffer == 1)
-                {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                }
+                if (buffer == 1)Console.BackgroundColor = ConsoleColor.Green;
                 Console.WriteLine(langSystem.Sets["no"]);
                 Console.ResetColor();
                 ConsoleKey key = Console.ReadKey(false).Key;
-                if (key == config.Keybind_Up)
-                {
-                    if (buffer == 1)
-                    {
-                        buffer = 0;
-                    }
-                }
-                else if (key == config.Keybind_Down)
-                {
-                    if (buffer == 0)
-                    {
-                        buffer = 1;
-                    }
-                }
+                if (key == config.Keybind_Up&& buffer == 1) buffer = 0;
+                else if (key == config.Keybind_Down&& buffer == 0) buffer = 1;
                 else if (key == ConsoleKey.Enter)
                 {
                     if (buffer == 0)
