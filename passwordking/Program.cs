@@ -407,16 +407,11 @@ namespace passwordking
 
                         ConsoleKey key = Console.ReadKey(false).Key;
                         if (key == config.Keybind_Down && selection != 3)
-                        {
-
                             selection++;
 
-                        }
                         else if (key == config.Keybind_Up && selection != 0)
-                        {
                             selection--;
 
-                        }
                         else if (key == ConsoleKey.Enter)
                         {
                             if (selection == 0) // How to Use
@@ -481,7 +476,6 @@ namespace passwordking
             byte buffer = 0;
             while (true)
             {
-
                 Console.Clear();
                 Console.ResetColor();
                 Console.WriteLine(topText);
