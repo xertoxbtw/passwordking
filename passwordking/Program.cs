@@ -40,7 +40,7 @@ namespace passwordking
                 config.Reset();
                 config.Save();
             }
-            langSystem= new LangSystem(config.Language);
+            langSystem = new LangSystem(config.Language);
             entries = new List<Entry>();
             Console.Clear();
             Console.CursorVisible = false;
@@ -59,7 +59,7 @@ namespace passwordking
                 }
                 else if (screen == 1) // Main Screen
                 {
-                    MainWindow(); 
+                    MainWindow();
                 }
                 else if (screen == 2) // New Screen
                 {
@@ -71,7 +71,7 @@ namespace passwordking
                 }
                 else if (screen == 4) // Add
                 {
-                    Add();   
+                    Add();
                 }
                 else if (screen == 5) // Edit
                 {
@@ -222,7 +222,11 @@ namespace passwordking
                 Console.ResetColor();
             }
 
+            MainInput();
+        }
 
+        static void MainInput()
+        {
             // Input
             ConsoleKey keyInput = Console.ReadKey(false).Key;
 
@@ -406,12 +410,12 @@ namespace passwordking
                 if (buffer == 0) Console.BackgroundColor = ConsoleColor.Green;
                 Console.WriteLine(langSystem.Sets["yes"]);
                 Console.ResetColor();
-                if (buffer == 1)Console.BackgroundColor = ConsoleColor.Green;
+                if (buffer == 1) Console.BackgroundColor = ConsoleColor.Green;
                 Console.WriteLine(langSystem.Sets["no"]);
                 Console.ResetColor();
                 ConsoleKey key = Console.ReadKey(false).Key;
-                if (key == config.Keybind_Up&& buffer == 1) buffer = 0;
-                else if (key == config.Keybind_Down&& buffer == 0) buffer = 1;
+                if (key == config.Keybind_Up && buffer == 1) buffer = 0;
+                else if (key == config.Keybind_Down && buffer == 0) buffer = 1;
                 else if (key == ConsoleKey.Enter)
                 {
                     if (buffer == 0)
