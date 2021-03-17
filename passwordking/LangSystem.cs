@@ -87,7 +87,7 @@ namespace passwordking
                 Sets.Add("no", "Nein");
 
                 Sets.Add("name", "Name");
-                Sets.Add("password", "Kennwörter");
+                Sets.Add("password", "Kennwort");
 
                 Sets.Add("mainpassword", "Bitte geben sie das Hauptkennwörter ein");
 

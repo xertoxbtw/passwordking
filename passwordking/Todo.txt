@@ -2,3 +2,4 @@
 -> Add Cloud support?
 -> Cleanup MainInput() Method
 -> Cleanup Help() Method
+-> Improve random Usage
