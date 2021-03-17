@@ -359,8 +359,6 @@ namespace passwordking
             }
             else screen = 1;
         }
-
-
         static bool Select(string topText)
         {
             byte buffer = 0;

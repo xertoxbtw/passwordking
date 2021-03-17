@@ -95,7 +95,6 @@ namespace passwordking
 
                 Sets.Add("mainpassword", "Bitte geben sie das Hauptkennwörter ein");
 
-
                 Sets.Add("textoverwrite", "Möchten Sie Ihre bestehenden Kennwörter überschreiben?");
                 Sets.Add("textdelete", "Möchten Sie wirklich alle gespeicherten Kennwörter löschen?");
 
@@ -119,7 +118,6 @@ namespace passwordking
                 Sets.Add("arrow", "->");
             }
         }
-
         public enum Language
         {
             EN, DE
