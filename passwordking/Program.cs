@@ -122,14 +122,9 @@ namespace passwordking
                     for (int i = 0; i < maxDraw; i++)
                     {
                         if (i + offset < entries.Count)
-                        {
-
-                            Buffer2 = Buffer2 + entries[i + offset] + "\n";
-                        }
+                            Buffer2 = Buffer2 + entries[i + offset] + "\n";                      
                         else
-                        {
                             Buffer2 = Buffer2 + "\n";
-                        }
                     }
                     Console.Write(Buffer2);
                     Console.Write(Buffer1);
@@ -198,16 +193,12 @@ namespace passwordking
                     }
                     else if (keyInput == config.Keybind_Down)
                     {
-
                         if (curY + offset != entries.Count - 1)
                         {
                             if (curY == maxDraw - 1)
                             {
                                 if (offset < entries.Count - 1)
-                                {
-
                                     offset++;
-                                }
                             }
                             else
                             {
@@ -217,7 +208,6 @@ namespace passwordking
                     }
                     else if (keyInput == config.Keybind_Up)
                     {
-
                         if (curY == 0)
                         {
                             if (offset != 0)
@@ -534,4 +524,3 @@ namespace passwordking
         }
     }
 }
-
