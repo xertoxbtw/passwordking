@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using TextCopy;
@@ -51,7 +52,10 @@ namespace passwordking
                 Console.ResetColor();
                 Console.Clear();
                 Console.CursorVisible = false;
-                Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+                }
 
                 if (screen == 0) // init Select
                 {
